@@ -20,6 +20,11 @@ let fakeExpenses: Expense[] = [
 
 export const expensesRoute = new Hono()
     .get("/", c => c.json({ expenses: fakeExpenses }))
+    .get('/total-spent', c => {
+        const totalSpent = fakeExpenses.reduce((acc, crr) => (acc + crr.amount), 0)
+        c.status(200)
+        return c.json({result: totalSpent})
+    })
     .post('/', zValidator('json', createExpenseSchema), (c) => {
         const data = c.req.valid('json');
         fakeExpenses.push({ id: fakeExpenses.length + 1, ...data })
