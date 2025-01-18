@@ -3,6 +3,7 @@
   "module": "server/index.ts",
   "type": "module",
   "scripts": {
+    "app:build": "bun install && cd ./frontend && bun install && bun run build", 
     "start": "bun server/index.ts",
     "dev": "bun --watch server/index.ts"
   },
