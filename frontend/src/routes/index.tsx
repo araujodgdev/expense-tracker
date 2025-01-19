@@ -8,20 +8,13 @@ import {
 } from "@/components/ui/card"
 import { api } from '../lib/api'
 import { useQuery } from '@tanstack/react-query'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const Route = createFileRoute('/')({
     component: Index,
 })
 
 async function fetchTotalSpent() {
-    // SIMULATES SERVER DELAY
-    // const simulatedPending = new Promise((res) => {
-    //   setTimeout(() => {
-    //     res("foo")
-    //   }, 1000)
-    // })
-    // await simulatedPending
-
     const res = await api.expenses['total-spent'].$get()
     if (!res.ok) {
         throw new Error('Server error on fetching total amount spent')
@@ -43,7 +36,7 @@ function Index() {
                     <CardDescription>Total amount spent.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    ${' '}{isPending ? '...' : data}
+                    {isPending ? <Skeleton className="h-6" /> : <p>$ {data}</p>}
                 </CardContent>
             </Card>
         </div>

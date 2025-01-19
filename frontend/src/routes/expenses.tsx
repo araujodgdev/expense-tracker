@@ -1,6 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    // TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const Route = createFileRoute('/expenses')({
     component: Expenses,
@@ -21,10 +32,35 @@ function Expenses() {
     if (error) return 'An error has occurred: ' + error.message
 
     return (
-        <div className="p-2">
-            <pre>
-                {isPending ? '...' : JSON.stringify(data, null, 2)}
-            </pre>
-        </div>
+        <>
+            <Table className='max-w-xl m-auto'>
+                <TableCaption>A list of your expenses.</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-[100px]">Id</TableHead>
+                        <TableHead>Title</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {isPending
+                        ? Array(3).fill(0).map((_, i) => (
+                            <TableRow key={i}>
+                                <TableCell className="font-medium"><Skeleton className="h-5" /></TableCell>
+                                <TableCell><Skeleton className="h-5" /></TableCell>
+                                <TableCell className="text-right"><Skeleton className="h-5" /></TableCell>
+                            </TableRow>
+                        ))
+                        : data.map((e) => (
+                            <TableRow key={e.id}>
+                                <TableCell className="font-medium">{e.id}</TableCell>
+                                <TableCell>{e.title}</TableCell>
+                                <TableCell className="text-right">${e.amount}</TableCell>
+                            </TableRow>
+                        ))
+                    }
+                </TableBody>
+            </Table>
+        </>
     )
 }
