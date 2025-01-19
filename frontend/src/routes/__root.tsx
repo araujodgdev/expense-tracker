@@ -1,5 +1,5 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+// import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 export const Route = createRootRoute({
   component: Root,
@@ -18,7 +18,7 @@ function NavBar() {
         Expenses
       </Link>
       <Link to='/create-expense' className='[&.active]:font-bold'>
-        New Expense
+        Create
       </Link>
     </nav>
   )
@@ -30,7 +30,7 @@ function Root() {
       <NavBar />
       <hr />
       <Outlet />
-      <TanStackRouterDevtools />
+      {/* <TanStackRouterDevtools /> */}
     </>
   )
 }
