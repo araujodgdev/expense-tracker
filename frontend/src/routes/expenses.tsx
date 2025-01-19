@@ -32,7 +32,7 @@ function Expenses() {
     if (error) return 'An error has occurred: ' + error.message
 
     return (
-        <>
+        <div className='p-4'>
             <Table className='max-w-xl m-auto'>
                 <TableCaption>A list of your expenses.</TableCaption>
                 <TableHeader>
@@ -61,6 +61,6 @@ function Expenses() {
                     }
                 </TableBody>
             </Table>
-        </>
+        </div>
     )
 }
