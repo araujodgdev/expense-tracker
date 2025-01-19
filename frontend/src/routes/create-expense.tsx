@@ -1,21 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '@/components/ui/button'
+import { api } from "@/lib/api"
 
 export const Route = createFileRoute('/create-expense')({
   component: CreateExpense,
 })
 
 function CreateExpense() {
+  const navigate = useNavigate()
   const form = useForm({
     defaultValues: {
       title: '',
       amount: 0
     },
     onSubmit: async ({ value }) => {
-      console.log(value)
+      const {ok} = await api.expenses.$post({json: value})
+      if(!ok) {
+        throw new Error('Server error')
+      }
+      navigate({to: '/expenses'})
     }
   })
   return (
@@ -37,10 +43,11 @@ function CreateExpense() {
                   type="text"
                   id={field.name}
                   placeholder="Title"
-                  value={field.state.value} 
+                  value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
+                {field.state.meta.errors ?? <em>{field.state.meta.errors}</em>}
               </>
             )}
           />
@@ -53,15 +60,22 @@ function CreateExpense() {
                   type="number"
                   id={field.name}
                   placeholder="$00.00"
-                  value={field.state.value} 
+                  value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(Number(e.target.value))}
                 />
+                {field.state.meta.errors ?? <em>{field.state.meta.errors}</em>}
               </>
             )}
           />
         </div>
-        <Button className='mt-4' type='submit'>Create</Button>
+        <form.Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          children={([canSubmit, isSubmitting]) => (
+            <Button className='mt-4 w-32' type='submit' disabled={!canSubmit}>{isSubmitting ? '...' : 'Create Expense'}</Button>
+          )}
+        />
+
       </form>
     </div>
   )
