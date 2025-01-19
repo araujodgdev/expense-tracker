@@ -58,3 +58,5 @@ export const expensesRoute = new Hono()
         fakeExpenses[index] = { id, ...data }
         return c.json({ result: fakeExpenses[index] })
     })
+
+export type ExpensesRouteType = typeof expensesRoute

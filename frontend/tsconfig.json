@@ -4,8 +4,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@server": [
+        "../server/*"
       ]
     },
+    "strict": true
   },
   "files": [],
   "references": [
